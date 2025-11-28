@@ -3,18 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmileLab - Sistema</title>
-
+<title>SmileLab - Sistema Odontológico</title>
 <link rel="icon" type="image/png" href="assets/Logo-colorida-sombreada-sem-fundo.png">
-
 <style>
-    body {
+    /* ESTILOS GLOBAIS */
+    * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Arial", sans-serif;
+    }
+    
+    body {
+        font-family: "Segoe UI", "Arial", sans-serif;
         height: 100vh;
         width: 100vw;
         overflow: hidden;
+        background-color: #f5f9ff;
+        color: #333;
+    }
+
+    html, body {
+        height: 100%;
+        overflow: auto !important;
     }
 
     /* ========================== */
@@ -35,49 +45,54 @@
     }
 
     #btnEntrar {
-        padding: 12px 40px;
-        font-size: 35px;
+        padding: 15px 45px;
+        font-size: 32px;
         border: none;
         border-radius: 14px;
         background: linear-gradient(135deg, #9fc5f0, #1E6BD6);
         color: white;
         cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
         position: absolute;
         right: 340px;
         bottom: 150px;
+        font-weight: bold;
     }
 
     #btnEntrar:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.30);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
     }
 
     /* ========================== */
     /* TELA LOGIN                 */
     /* ========================== */
     #telaLogin {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: url('assets/Página-Login-SmileLab.png') no-repeat center center;
-    background-size: cover;
-    justify-content: flex-end;
-    align-items: center;
-}
-
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: url('assets/Página-Login-SmileLab.png') no-repeat center center;
+        background-size: cover;
+        justify-content: flex-end;
+        align-items: center;
+    }
 
     .login-box {
-        width: 380px;
+        width: 420px;
         background: white;
         padding: 40px;
         border-radius: 18px;
-        box-shadow: 0px 10px 35px rgba(0,0,0,0.25);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
         margin-right: 100px;
+        transition: transform 0.3s ease;
+    }
+
+    .login-box:hover {
+        transform: translateY(-5px);
     }
 
     .login-box h1 {
@@ -92,140 +107,667 @@
         font-weight: bold;
         color: #003366;
         font-size: 15px;
+        display: block;
+        margin-bottom: 8px;
     }
 
     input {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         margin-top: 6px;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
         border: 1px solid #88a8c8;
         border-radius: 10px;
         font-size: 16px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus {
+        border-color: #1E6BD6;
+        box-shadow: 0 0 0 3px rgba(30, 107, 214, 0.2);
+        outline: none;
     }
 
     #btnLogin {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         border: none;
         background: linear-gradient(135deg, #7ab4ff, #1E6BD6);
         color: white;
         border-radius: 10px;
         font-size: 18px;
         cursor: pointer;
-        transition: 0.2s;
-        box-shadow: 0px 6px 18px rgba(0,0,0,0.20);
+        transition: 0.3s;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.20);
+        font-weight: bold;
     }
 
     #btnLogin:hover {
         transform: translateY(-3px);
-        box-shadow: 0px 12px 22px rgba(0,0,0,0.25);
+        box-shadow: 0 12px 22px rgba(0,0,0,0.25);
     }
 
     /* ========================== */
-    /* OUTRAS TELAS               */
+    /* ESTRUTURA COMUM DAS TELAS  */
     /* ========================== */
-    #telaDentista, #telaSecretaria, #telaAdmin {
+    .tela-interna {
         display: none;
         position: absolute;
         top: 0;
         left: 0;
         height: 100%;
         width: 100%;
-        background: white;
+        background: linear-gradient(180deg,#f7fbff,#ffffff);
+        overflow: auto;
+        box-sizing: border-box;
     }
 
-/* NAVBAR SUPERIOR */
-.admin-navbar {
-    height: 70px;
-    width: 100%;
-    background: #1E6BD6;
-    display: flex;
-    align-items: center;
-    padding-left: 20px;
-    color: white;
-}
+    /* NAVBAR SUPERIOR */
+    .navbar {
+        height: 75px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 25px;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
-.logoAdmin {
-    height: 50px;
-    margin-right: 15px;
-}
+    .navbar-admin {
+        background: linear-gradient(135deg, #1E6BD6, #0d4a9c);
+    }
 
-.admin-title {
-    font-size: 22px;
-    font-weight: bold;
-}
+    .navbar-secretaria {
+        background: linear-gradient(135deg, #0B72C6, #0857a0);
+    }
 
-/* SIDEBAR */
-.admin-sidebar {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 250px;
-    height: calc(100% - 70px);
-    background: #e8f1ff;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
+    .navbar-dentista {
+        background: linear-gradient(135deg, #0063a5, #004a7c);
+    }
 
-.side-btn {
-    width: 100%;
-    padding: 18px;
-    text-align: left;
-    font-size: 17px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #003366;
-    transition: 0.2s;
-}
+    .logo {
+        height: 48px;
+        margin-right: 15px;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
 
-.side-btn:hover {
-    background: #d2e4ff;
-}
+    .titulo-navbar {
+        font-size: 22px;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
 
-/* CONTEÚDO */
-.admin-content {
-    margin-left: 260px;
-    margin-top: 80px;
-    padding: 20px;
-}
+    /* LAYOUT: sidebar + conteúdo */
+    .wrapper {
+        display: flex;
+        min-height: calc(100vh - 75px);
+    }
 
-/* FORMULÁRIOS */
-.formulario {
-    display: flex;
-    flex-direction: column;
-    width: 500px;
-}
+    .sidebar {
+        width: 280px;
+        min-width: 240px;
+        background: #e8f1ff;
+        padding-top: 25px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 3px 0 12px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 75px;
+        height: calc(100vh - 75px);
+        overflow: auto;
+        border-right: 1px solid #d0e0f0;
+    }
 
-.formulario input,
-.formulario textarea {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #88a8c8;
-    border-radius: 10px;
-}
+    .btn-sidebar {
+        width: 100%;
+        padding: 18px 25px;
+        text-align: left;
+        font-size: 16px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #003366;
+        transition: all 0.25s;
+        border-left: 4px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-.salvar-btn {
-    padding: 12px;
-    background: #1E6BD6;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
+    .btn-sidebar i {
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+    }
 
-/* RELATÓRIOS */
-.relatorio-btn {
-    padding: 12px 18px;
-    background: #1E6BD6;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    margin-right: 10px;
-    cursor: pointer;
-}
+    .btn-sidebar.active {
+        background: #d2e9ff;
+        border-left-color: #1E6BD6;
+        font-weight: 700;
+        box-shadow: inset 0 0 8px rgba(30, 107, 214, 0.1);
+    }
+
+    .btn-sidebar:hover {
+        background: #dcefff;
+        transform: translateX(3px);
+    }
+
+    /* Conteúdo principal */
+    .conteudo {
+        flex: 1;
+        padding: 30px;
+        padding-bottom: 60px;
+        overflow: auto;
+    }
+
+    .pagina {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+        display: none;
+    }
+
+    .pagina-ativa {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 { 
+        margin-top: 0; 
+        color: #0b3a66; 
+        margin-bottom: 15px;
+        font-size: 28px;
+        border-bottom: 2px solid #e8f1ff;
+        padding-bottom: 10px;
+    }
+
+    h2 {
+        color: #0b3a66;
+        margin: 20px 0 15px;
+        font-size: 22px;
+    }
+
+    h3 {
+        color: #0b3a66;
+        margin: 18px 0 12px;
+        font-size: 18px;
+    }
+
+    /* FORMULÁRIOS */
+    .formulario {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 800px;
+        gap: 15px;
+    }
+
+    .linha-formulario {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .linha-formulario > * { 
+        flex: 1; 
+        min-width: 200px; 
+    }
+
+    .grupo-formulario {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .formulario input,
+    .formulario textarea,
+    .formulario select {
+        padding: 12px;
+        border: 1px solid #c8d5ea;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .formulario input:focus,
+    .formulario textarea:focus,
+    .formulario select:focus {
+        border-color: #1E6BD6;
+        box-shadow: 0 0 0 3px rgba(30, 107, 214, 0.2);
+        outline: none;
+    }
+
+    .botao-salvar {
+        padding: 14px 22px;
+        background: linear-gradient(135deg,#7ab4ff,#1E6BD6);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        width: fit-content;
+        font-weight: bold;
+        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 4px 12px rgba(30, 107, 214, 0.3);
+    }
+
+    .botao-salvar:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(30, 107, 214, 0.4);
+    }
+
+    .botao-secundario {
+        padding: 10px 18px;
+        background: #f0f5ff;
+        color: #1E6BD6;
+        border: 1px solid #c8d5ea;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+
+    .botao-secundario:hover {
+        background: #e0ebff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* tabela e listas */
+    .tabela {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .tabela th {
+        background: #e8f1ff;
+        padding: 14px;
+        text-align: left;
+        font-weight: 600;
+        color: #0b3a66;
+        border-bottom: 2px solid #d0e0f0;
+    }
+
+    .tabela td {
+        padding: 12px 14px;
+        border-bottom: 1px solid #eef5ff;
+        text-align: left;
+    }
+
+    .tabela tr:hover {
+        background-color: #f5f9ff;
+    }
+
+    .texto-secundario { 
+        color: #6b7f95; 
+        font-size: 15px; 
+        line-height: 1.5;
+    }
+
+    /* CALENDÁRIO */
+    .calendario {
+        max-width: 950px;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .cabecalho-calendario {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e8f1ff;
+    }
+
+    .grade-calendario {
+        display:grid;
+        grid-template-columns: repeat(7,1fr);
+        gap:10px;
+    }
+
+    .celula-calendario {
+        background: #f6fbff;
+        padding: 15px;
+        border-radius: 10px;
+        min-height: 110px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #e0ebff;
+    }
+
+    .celula-calendario:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .celula-calendario.desativada { 
+        opacity: .35; 
+        background: #f0f0f0;
+    }
+
+    .dia-calendario {
+        font-weight:700;
+        margin-bottom:10px;
+        color: #0b3a66;
+        font-size: 16px;
+    }
+
+    .botao-data {
+        display:inline-block;
+        padding:8px 12px;
+        border-radius:8px;
+        cursor:pointer;
+        border:1px solid transparent;
+        transition: all .2s;
+        background: #e8f1ff;
+        color: #0b3a66;
+        font-weight: 500;
+        margin-top: 8px;
+    }
+
+    .botao-data:hover { 
+        transform: translateY(-2px); 
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .botao-data.selecionado {
+        background: linear-gradient(135deg,#9fc5f0,#1E6BD6);
+        color:white;
+        border-color: rgba(0,0,0,0.06);
+        box-shadow: 0 3px 8px rgba(30, 107, 214, 0.3);
+    }
+
+    .lista-horarios { 
+        margin-top: 15px; 
+        display:flex; 
+        gap:10px; 
+        flex-wrap:wrap; 
+    }
+    
+    .slot-horario { 
+        padding:10px 14px; 
+        border-radius:8px; 
+        background:#fff; 
+        border:1px solid #cfe7ff; 
+        cursor:pointer; 
+        transition: all 0.3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .slot-horario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .slot-horario.desativado { 
+        opacity:.45; 
+        cursor:not-allowed; 
+        text-decoration: line-through; 
+    }
+    
+    .slot-horario.selecionado {
+        background: linear-gradient(135deg,#9fc5f0,#1E6BD6);
+        color: white;
+        border-color: #1E6BD6;
+        box-shadow: 0 3px 8px rgba(30, 107, 214, 0.3);
+    }
+
+    /* FINANCEIRO */
+    .caixas-financeiras { 
+        display:flex; 
+        gap:15px; 
+        flex-wrap:wrap; 
+        margin-bottom:20px; 
+    }
+    
+    .cartao-financeiro { 
+        background:#fff; 
+        padding:20px; 
+        border-radius:12px; 
+        min-width:200px; 
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        flex: 1;
+        border: 1px solid #e8f1ff;
+        transition: transform 0.3s;
+    }
+    
+    .cartao-financeiro:hover {
+        transform: translateY(-5px);
+    }
+    
+    .botao-relatorio { 
+        margin-right: 10px; 
+    }
+
+    /* GRADE SEMANAL */
+    .grade-semanal {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .dia-semanal {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        cursor: pointer;
+        transition: all 0.25s;
+        border: 1px solid #e8f1ff;
+    }
+
+    .dia-semanal:hover {
+        background: #f0f7ff;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .item-agenda {
+        padding: 8px;
+        margin: 8px 0;
+        background: #e8f1ff;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s;
+        border-left: 3px solid #1E6BD6;
+    }
+
+    .item-agenda:hover {
+        background: #d2e9ff;
+        transform: translateX(3px);
+    }
+
+    /* ESPECIALIDADES */
+    .container-especialidades {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .linha-especialidade {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .input-especialidade {
+        flex: 1;
+    }
+
+    .botao-remover-especialidade {
+        padding: 10px 14px;
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .botao-remover-especialidade:hover {
+        background: #ff5252;
+        transform: scale(1.05);
+    }
+
+    .botao-adicionar-especialidade {
+        padding: 10px 15px;
+        background: #e8f1ff;
+        color: #1E6BD6;
+        border: 1px dashed #1E6BD6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+        width: fit-content;
+    }
+
+    .botao-adicionar-especialidade:hover {
+        background: #d2e9ff;
+        transform: translateY(-2px);
+    }
+
+    .tag-especialidade {
+        display: inline-block;
+        background: #e8f1ff;
+        color: #1E6BD6;
+        padding: 5px 10px;
+        border-radius: 20px;
+        margin: 3px;
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* MODAL */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0; 
+        left: 0;
+        width: 100%; 
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+    }
+
+    .conteudo-modal {
+        background: white;
+        width: 520px;
+        max-width: 90%;
+        margin: 60px auto;
+        padding: 30px;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        animation: modalFadeIn 0.4s ease;
+    }
+
+    @keyframes modalFadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fechar-modal {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 26px;
+        cursor: pointer;
+        color: #6b7f95;
+        transition: color 0.3s;
+    }
+
+    .fechar-modal:hover {
+        color: #ff6b6b;
+    }
+
+    /* Responsivo */
+    @media (max-width: 1000px) {
+        .sidebar { 
+            width: 220px;
+            min-width: 200px;
+        }
+        
+        .conteudo {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .sidebar { 
+            display:none; 
+        }
+        
+        .wrapper { 
+            flex-direction: column; 
+        }
+        
+        .conteudo { 
+            margin-left: 0; 
+            padding: 18px; 
+        }
+        
+        .linha-formulario {
+            flex-direction: column;
+        }
+        
+        .linha-formulario > * {
+            min-width: 100%;
+        }
+        
+        .grade-semanal, .grade-calendario {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .caixas-financeiras {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .grade-semanal, .grade-calendario {
+            grid-template-columns: 1fr;
+        }
+        
+        .cabecalho-calendario {
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .login-box {
+            width: 90%;
+            margin-right: 0;
+            margin: 0 auto;
+        }
+        
+        #btnEntrar {
+            right: 50%;
+            transform: translateX(50%);
+            bottom: 100px;
+        }
+    }
 </style>
 </head>
 <body>
@@ -242,7 +784,7 @@
 <!-- ========================== -->
 <div id="telaLogin">
     <div class="login-box">
-        <h1>Faça seu login aqui</h1>
+        <h1>Faça seu login</h1>
 
         <label for="usuario">Usuário</label>
         <input type="text" id="usuario" placeholder="Digite seu usuário">
@@ -255,200 +797,1721 @@
 </div>
 
 <!-- ========================== -->
-<!-- TELAS INTERNAS             -->
+<!-- TELA ADMINISTRATIVA        -->
 <!-- ========================== -->
-<div id="telaDentista"><h1>Tela do Dentista</h1></div>
-<div id="telaSecretaria"><h1>Tela da Secretária</h1></div>
-<div id="telaAdmin">
-
+<div id="telaAdmin" class="tela-interna">
     <!-- NAVBAR SUPERIOR -->
-    <div class="admin-navbar">
-        <img src="assets/Logo-branca-sombreada-sem-fundo.png" class="logoAdmin">
-        <span class="admin-title">SmileLab - Área Administrativa</span>
+    <div class="navbar navbar-admin">
+        <img src="assets/Logo-branca-sombreada-sem-fundo.png" class="logo" alt="logo">
+        <span class="titulo-navbar">SmileLab - Área Administrativa</span>
     </div>
 
-    <!-- SIDEBAR LATERAL -->
-    <div class="admin-sidebar">
-        <button class="side-btn" onclick="abrirAbaAdmin('dashboard')">Dashboard</button>
-        <button class="side-btn" onclick="abrirAbaAdmin('pacientes')">Cadastro de Pacientes</button>
-        <button class="side-btn" onclick="abrirAbaAdmin('dentistas')">Cadastro de Dentistas</button>
-        <button class="side-btn" onclick="abrirAbaAdmin('agendamentos')">Agendamentos</button>
-        <button class="side-btn" onclick="abrirAbaAdmin('financeiro')">Financeiro</button>
-        <button class="side-btn" onclick="abrirAbaAdmin('relatorios')">Relatórios</button>
-    </div>
-
-    <!-- ÁREA DE CONTEÚDO -->
-    <div class="admin-content">
-
-        <!-- DASHBOARD -->
-        <div class="adminPage" id="aba-dashboard">
-            <h1>Bem-vindo ao Painel Administrativo</h1>
-            <p>Selecione uma das opções ao lado para começar.</p>
+    <!-- WRAPPER -->
+    <div class="wrapper">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <button class="btn-sidebar active" data-aba="dashboard">
+                <i>📊</i> Dashboard
+            </button>
+            <button class="btn-sidebar" data-aba="pacientes">
+                <i>👥</i> Cadastro de Pacientes
+            </button>
+            <button class="btn-sidebar" data-aba="dentistas">
+                <i>👨‍⚕️</i> Cadastro de Dentistas
+            </button>
+            <button class="btn-sidebar" data-aba="agendamentos">
+                <i>📅</i> Agendamentos
+            </button>
+            <button class="btn-sidebar" data-aba="financeiro">
+                <i>💰</i> Financeiro
+            </button>
+            <button class="btn-sidebar" data-aba="relatorios">
+                <i>📋</i> Relatórios
+            </button>
         </div>
 
-        <!-- CADASTRO DE PACIENTES -->
-        <div class="adminPage" id="aba-pacientes" style="display:none;">
-            <h1>Cadastro de Pacientes</h1>
+        <!-- CONTEÚDO -->
+        <div class="conteudo">
+            <!-- DASHBOARD -->
+            <div class="pagina pagina-ativa" id="aba-dashboard">
+                <h1>Painel Administrativo</h1>
+                <p class="texto-secundario">Bem-vindo ao painel de administração do SmileLab. Use o menu à esquerda para navegar entre os módulos.</p>
 
-            <form class="formulario">
-                <label>Nome:</label>
-                <input type="text">
+                <div class="caixas-financeiras">
+                    <div class="cartao-financeiro">
+                        <h3>Entradas do Mês</h3>
+                        <strong id="totalEntradas" style="font-size: 24px; color: #2e7d32;">R$ 0,00</strong>
+                    </div>
+                    <div class="cartao-financeiro">
+                        <h3>Saídas do Mês</h3>
+                        <strong id="totalSaidas" style="font-size: 24px; color: #c62828;">R$ 0,00</strong>
+                    </div>
+                    <div class="cartao-financeiro">
+                        <h3>Saldo Atual</h3>
+                        <strong id="saldoAtual" style="font-size: 24px; color: #0b3a66;">R$ 0,00</strong>
+                    </div>
+                </div>
 
-                <label>Endereço:</label>
-                <input type="text">
+                <div>
+                    <h3>Próximos Agendamentos</h3>
+                    <table class="tabela" id="tabelaProximosAgendamentos">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Paciente</th>
+                                <th>Dentista</th>
+                                <th>Especialidade</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
 
-                <label>Telefone:</label>
-                <input type="text">
+            <!-- PACIENTES -->
+            <div class="pagina" id="aba-pacientes">
+                <h1>Cadastro de Pacientes</h1>
+                
+                <!-- Formulário de Pacientes (Compartilhado) -->
+                <div id="formulario-pacientes-container"></div>
+                
+                <h3>Pacientes Cadastrados</h3>
+                <table class="tabela" id="tabelaPacientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Nascimento</th>
+                            <th>CPF</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
 
-                <label>Data de Nascimento:</label>
-                <input type="date">
+            <!-- DENTISTAS -->
+            <div class="pagina" id="aba-dentistas">
+                <h1>Cadastro de Dentistas</h1>
 
-                <label>CPF:</label>
-                <input type="text">
+                <form class="formulario" id="formCadastroDentista">
+                    <div class="linha-formulario">
+                        <div class="grupo-formulario">
+                            <label>Nome:</label>
+                            <input type="text" id="dentistaNome" required>
+                        </div>
+                    </div>
 
-                <label>Histórico de Tratamento:</label>
-                <textarea></textarea>
+                    <div class="grupo-formulario">
+                        <label>Especialidades:</label>
+                        <div class="container-especialidades" id="containerEspecialidades">
+                            <!-- As especialidades serão adicionadas dinamicamente aqui -->
+                        </div>
+                        <button type="button" class="botao-adicionar-especialidade" id="btnAdicionarEspecialidade">
+                            + Adicionar Especialidade
+                        </button>
+                    </div>
 
-                <label>Alergias:</label>
-                <textarea></textarea>
+                    <div>
+                        <button type="button" class="botao-salvar" id="btnSalvarDentista">Salvar Dentista</button>
+                    </div>
+                </form>
 
-                <label>Foto 3x4:</label>
-                <input type="file" accept="image/*">
+                <h3>Dentistas Cadastrados</h3>
+                <table class="tabela" id="tabelaDentistas">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Especialidades</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
 
-                <label>Radiografias:</label>
-                <input type="file" accept="image/*" multiple>
+            <!-- AGENDAMENTOS -->
+            <div class="pagina" id="aba-agendamentos">
+                <h1>Agendamentos</h1>
+                
+                <!-- Componente de Agendamentos (Compartilhado) -->
+                <div id="agendamentos-container"></div>
+            </div>
 
-                <label>Observações:</label>
-                <textarea></textarea>
+            <!-- FINANCEIRO -->
+            <div class="pagina" id="aba-financeiro">
+                <h1>Financeiro</h1>
 
-                <button class="salvar-btn">Salvar Paciente</button>
-            </form>
-        </div>
+                <div class="caixas-financeiras">
+                    <div class="cartao-financeiro">
+                        <h4>Entradas do Mês</h4>
+                        <div id="valorEntradas" style="font-size: 20px; color: #2e7d32;">R$ 0,00</div>
+                    </div>
+                    <div class="cartao-financeiro">
+                        <h4>Saídas do Mês</h4>
+                        <div id="valorSaidas" style="font-size: 20px; color: #c62828;">R$ 0,00</div>
+                    </div>
+                    <div class="cartao-financeiro">
+                        <h4>Saldo</h4>
+                        <div id="valorSaldo" style="font-size: 20px; color: #0b3a66;">R$ 0,00</div>
+                    </div>
+                </div>
 
-        <!-- CADASTRO DE DENTISTAS -->
-        <div class="adminPage" id="aba-dentistas" style="display:none;">
-            <h1>Cadastro de Dentistas</h1>
+                <h3>Pagamentos (Mês Atual)</h3>
+                <table class="tabela" id="tabelaPagamentos">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Valor</th>
+                            <th>Tipo</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
 
-            <form class="formulario">
-                <label>Nome:</label>
-                <input type="text">
+            <!-- RELATÓRIOS -->
+            <div class="pagina" id="aba-relatorios">
+                <h1>Relatórios</h1>
+                <p class="texto-secundario">Gere relatórios em formato CSV para análise externa.</p>
 
-                <label>Endereço:</label>
-                <input type="text">
-
-                <label>Telefone:</label>
-                <input type="text">
-
-                <label>Data de Nascimento:</label>
-                <input type="date">
-
-                <label>CPF:</label>
-                <input type="text">
-
-                <label>Especialidade:</label>
-                <input type="text">
-
-                <label>Serviços Ofertados:</label>
-                <textarea></textarea>
-
-                <button class="salvar-btn">Salvar Dentista</button>
-            </form>
-        </div>
-
-        <!-- AGENDAMENTOS -->
-        <div class="adminPage" id="aba-agendamentos" style="display:none;">
-            <h1>Agendamentos</h1>
-
-            <div id="calendario"></div>
-
-            <div id="area-horarios" style="display:none;">
-                <h3>Horários Disponíveis</h3>
-                <div id="lista-horarios"></div>
+                <div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:20px;">
+                    <button class="botao-relatorio botao-salvar" id="btnRelPacientes">
+                        Relatório de Pacientes (CSV)
+                    </button>
+                    <button class="botao-relatorio botao-salvar" id="btnRelDentistas">
+                        Relatório de Dentistas (CSV)
+                    </button>
+                    <button class="botao-relatorio botao-salvar" id="btnRelFinanceiro">
+                        Relatório Financeiro (CSV)
+                    </button>
+                </div>
             </div>
         </div>
-
-        <!-- FINANCEIRO -->
-        <div class="adminPage" id="aba-financeiro" style="display:none;">
-            <h1>Financeiro</h1>
-
-            <div class="financeiro-box">
-                <p>Entradas do mês: R$ 0,00</p>
-                <p>Saídas do mês: R$ 0,00</p>
-                <p>Saldo: R$ 0,00</p>
-            </div>
-        </div>
-
-        <!-- RELATÓRIOS -->
-        <div class="adminPage" id="aba-relatorios" style="display:none;">
-            <h1>Relatórios</h1>
-            <button class="relatorio-btn">Gerar Relatório de Pacientes</button>
-            <button class="relatorio-btn">Gerar Relatório de Dentistas</button>
-            <button class="relatorio-btn">Gerar Relatório Financeiro</button>
-        </div>
-
     </div>
 </div>
 
+<!-- ========================== -->
+<!-- TELA SECRETÁRIA            -->
+<!-- ========================== -->
+<div id="telaSecretaria" class="tela-interna">
+    <!-- Navbar -->
+    <div class="navbar navbar-secretaria">
+        <img src="assets/Logo-branca-sombreada-sem-fundo.png" class="logo" alt="logo">
+        <span class="titulo-navbar">SmileLab - Área da Secretária</span>
+    </div>
+
+    <div class="wrapper">
+        <!-- MENU LATERAL -->
+        <div class="sidebar">
+            <button class="btn-sidebar active" data-aba="sec-dashboard">
+                <i>📊</i> Dashboard
+            </button>
+            <button class="btn-sidebar" data-aba="sec-pacientes">
+                <i>👥</i> Cadastro de Pacientes
+            </button>
+            <button class="btn-sidebar" data-aba="sec-agendamentos">
+                <i>📅</i> Agendamentos
+            </button>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="conteudo">
+            <!-- DASHBOARD -->
+            <div class="pagina pagina-ativa" id="sec-dashboard">
+                <h1>Dashboard da Secretária</h1>
+                <p class="texto-secundario">Bem-vinda! Gerencie pacientes e agendamentos de forma prática e rápida.</p>
+
+                <h3>Próximos Agendamentos</h3>
+                <table class="tabela" id="tabelaProximosAgendamentosSec">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Paciente</th>
+                            <th>Dentista</th>
+                            <th>Especialidade</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- PACIENTES -->
+            <div class="pagina" id="sec-pacientes">
+                <h1>Cadastro de Pacientes</h1>
+                
+                <!-- Formulário de Pacientes (Compartilhado) -->
+                <div id="formulario-pacientes-secretaria-container"></div>
+                
+                <h3>Pacientes Cadastrados</h3>
+                <table class="tabela" id="tabelaSecPacientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Nascimento</th>
+                            <th>CPF</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- AGENDAMENTOS -->
+            <div class="pagina" id="sec-agendamentos">
+                <h1>Agendamentos</h1>
+                
+                <!-- Componente de Agendamentos (Compartilhado) -->
+                <div id="agendamentos-secretaria-container"></div>
+                
+                <h3>Agendamentos Registrados</h3>
+                <table class="tabela" id="tabelaSecAgendamentos">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Paciente</th>
+                            <th>Dentista</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================== -->
+<!-- TELA DENTISTA              -->
+<!-- ========================== -->
+<div id="telaDentista" class="tela-interna">
+    <!-- NAVBAR -->
+    <div class="navbar navbar-dentista">
+        <img src="assets/Logo-branca-sombreada-sem-fundo.png" class="logo">
+        <span class="titulo-navbar">SmileLab - Área do Dentista</span>
+    </div>
+
+    <div class="wrapper">
+        <!-- MENU LATERAL -->
+        <div class="sidebar">
+            <button class="btn-sidebar active" data-aba="dent-agenda">
+                <i>📅</i> Minha Agenda
+            </button>
+            <button class="btn-sidebar" data-aba="dent-pacientes">
+                <i>👥</i> Meus Pacientes
+            </button>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="conteudo">
+            <!-- AGENDA SEMANAL -->
+            <div class="pagina pagina-ativa" id="dent-agenda">
+                <h1>Minha Agenda Semanal</h1>
+                <div class="grade-semanal" id="gradeAgendaDentista"></div>
+            </div>
+
+            <!-- PACIENTES -->
+            <div class="pagina" id="dent-pacientes">
+                <h1>Pacientes Atendidos</h1>
+
+                <table class="tabela" id="tabelaDentPacientes">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Nascimento</th>
+                            <th>CPF</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DO PACIENTE (Compartilhado) -->
+<div id="modalPaciente" class="modal">
+    <div class="conteudo-modal">
+        <span class="fechar-modal" onclick="fecharModalPaciente()">&times;</span>
+
+        <h2 id="nomePacienteModal"></h2>
+
+        <div class="linha-formulario">
+            <div class="grupo-formulario">
+                <p><strong>Telefone:</strong> <span id="telefonePacienteModal"></span></p>
+            </div>
+            <div class="grupo-formulario">
+                <p><strong>Nascimento:</strong> <span id="nascimentoPacienteModal"></span></p>
+            </div>
+        </div>
+        
+        <div class="grupo-formulario">
+            <p><strong>CPF:</strong> <span id="cpfPacienteModal"></span></p>
+        </div>
+
+        <div class="grupo-formulario">
+            <label for="historicoTratamento">Histórico de Tratamento</label>
+            <textarea id="historicoTratamento" rows="4"></textarea>
+        </div>
+        
+        <div class="grupo-formulario">
+            <label for="alergiasPaciente">Alergias</label>
+            <textarea id="alergiasPaciente" rows="3"></textarea>
+        </div>
+        
+        <div class="grupo-formulario">
+            <label for="evolucoesPaciente">Evoluções</label>
+            <textarea id="evolucoesPaciente" rows="4"></textarea>
+        </div>
+        
+        <div class="linha-formulario">
+            <div class="grupo-formulario">
+                <label for="fotoPaciente">Foto 3x4</label>
+                <input type="file" id="fotoPaciente" accept="image/*">
+            </div>
+            
+            <div class="grupo-formulario">
+                <label for="radiografiasPaciente">Radiografias</label>
+                <input type="file" id="radiografiasPaciente" accept="image/*" multiple>
+            </div>
+        </div>
+
+        <div class="grupo-formulario">
+            <label for="observacoesPaciente">Observações</label>
+            <textarea id="observacoesPaciente" rows="4"></textarea>
+        </div>
+
+        <button id="salvarDadosPaciente" class="botao-salvar">Salvar Alterações</button>
+    </div>
+</div>
 
 <script>
-/* ---------------------- */
-/* TRANSIÇÃO PARA LOGIN   */
-/* ---------------------- */
-document.getElementById("btnEntrar").addEventListener("click", () => {
-    telaInicial.style.display = "none";
-    telaLogin.style.display = "flex";
-});
+// =============================================
+// MÓDULO DE UTILITÁRIOS
+// =============================================
+const Utilitarios = {
+    // Funções de armazenamento
+    armazenamento: {
+        obter(chave, valorPadrao) {
+            try { 
+                return JSON.parse(localStorage.getItem(chave)) ?? valorPadrao; 
+            } catch(e) { 
+                return valorPadrao; 
+            }
+        },
+        definir(chave, valor) { 
+            localStorage.setItem(chave, JSON.stringify(valor)); 
+        }
+    },
+    
+    // Gerar ID único
+    gerarId() { 
+        return 'id' + Math.random().toString(36).slice(2, 9); 
+    },
+    
+    // Formatar moeda
+    formatarMoeda(valor) { 
+        return 'R$ ' + Number(valor).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); 
+    },
+    
+    // Seletores DOM
+    seletor(seletor, raiz = document) { 
+        return raiz.querySelector(seletor); 
+    },
+    seletores(seletor, raiz = document) { 
+        return Array.from(raiz.querySelectorAll(seletor)); 
+    },
+    
+    // Formatar data para exibição
+    formatarData(data) {
+        return new Date(data).toLocaleDateString('pt-BR');
+    }
+};
 
-/* ---------------------- */
-/* SISTEMA DE LOGIN       */
-/* ---------------------- */
-document.getElementById("btnLogin").addEventListener("click", () => {
-    const usuario = document.getElementById("usuario").value.trim();
-    const senha = document.getElementById("senha").value.trim();
+// =============================================
+// MÓDULO DE LOGIN
+// =============================================
+const ModuloLogin = {
+    inicializar() {
+        // Transição para tela de login
+        Utilitarios.seletor("#btnEntrar").addEventListener("click", () => {
+            Utilitarios.seletor("#telaInicial").style.display = "none";
+            Utilitarios.seletor("#telaLogin").style.display = "flex";
+        });
 
-    /* SECRETÁRIA */
-    if (usuario === "Marcia" && senha === "Marcinha1234") {
-        abrirTela("secretaria");
-    }
-    /* DENTISTAS */
-    else if (usuario === "FábioDentista" && senha === "Fabio1234") {
-        abrirTela("dentista");
-    }
-    else if (usuario === "DrCarlos" && senha === "CARLOS") {
-        abrirTela("dentista");
-    }
-    else if (usuario === "JoanaDentista" && senha === "J123") {
-        abrirTela("dentista");
-    }
-    /* ADMIN */
-    else if (usuario === "DrGustavoLarios" && senha === "SmileyLab!1234") {
-        abrirTela("admin");
-    }
-    else {
-        alert("Usuário ou senha incorretos.");
-    }
-});
+        // Sistema de login
+        Utilitarios.seletor("#btnLogin").addEventListener("click", () => {
+            const usuario = Utilitarios.seletor("#usuario").value.trim();
+            const senha = Utilitarios.seletor("#senha").value.trim();
 
-/* ---------------------- */
-/* FUNÇÃO DE TROCAR TELAS */
-/* ---------------------- */
-function abrirTela(tipo) {
-    telaLogin.style.display = "none";
+            // Credenciais de acesso
+            const credenciais = {
+                "Marcia": { senha: "Marcinha1234", tipo: "secretaria" },
+                "FábioDentista": { senha: "Fabio1234", tipo: "dentista" },
+                "DrCarlos": { senha: "CARLOS", tipo: "dentista" },
+                "JoanaDentista": { senha: "J123", tipo: "dentista" },
+                "DrGustavoLarios": { senha: "SmileyLab!1234", tipo: "admin" }
+            };
 
-    if (tipo === "secretaria") telaSecretaria.style.display = "block";
-    if (tipo === "dentista") telaDentista.style.display = "block";
-    if (tipo === "admin") telaAdmin.style.display = "block";
+            if (credenciais[usuario] && credenciais[usuario].senha === senha) {
+                this.abrirTela(credenciais[usuario].tipo);
+            } else {
+                alert("Usuário ou senha incorretos.");
+            }
+        });
+    },
+
+    abrirTela(tipo) {
+        // Esconder todas as telas
+        Utilitarios.seletores(".tela-interna").forEach(tela => {
+            tela.style.display = "none";
+        });
+        Utilitarios.seletor("#telaInicial").style.display = "none";
+        Utilitarios.seletor("#telaLogin").style.display = "none";
+
+        // Mostrar a tela correspondente
+        Utilitarios.seletor(`#tela${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`).style.display = "block";
+        
+        // Inicializar módulos específicos
+        if (tipo === "admin") ModuloAdmin.inicializar();
+        if (tipo === "secretaria") ModuloSecretaria.inicializar();
+        if (tipo === "dentista") ModuloDentista.inicializar();
+    }
+};
+
+// =============================================
+// MÓDULO DE PACIENTES (COMPARTILHADO)
+// =============================================
+const ModuloPacientes = {
+    inicializar(containerId = "formulario-pacientes-container", tabelaId = "tabelaPacientes") {
+        // Inicializar dados padrão se necessário
+        this.inicializarDadosPadrao();
+        
+        // Renderizar formulário de pacientes
+        this.renderizarFormularioPacientes(containerId);
+        
+        // Renderizar lista de pacientes
+        this.renderizarPacientes(tabelaId);
+    },
+
+    inicializarDadosPadrao() {
+        if (!Utilitarios.armazenamento.obter('sml_pacientes', null)) {
+            Utilitarios.armazenamento.definir('sml_pacientes', [
+                { 
+                    id: Utilitarios.gerarId(), 
+                    nome: 'Maria Silva', 
+                    telefone: '(85) 98765-4321', 
+                    nascimento: '1990-05-12', 
+                    cpf: '111.222.333-44', 
+                    historico: 'Paciente em tratamento de clareamento dental.',
+                    alergias: 'Nenhuma alergia conhecida.',
+                    evolucoes: 'Evolução satisfatória no tratamento.',
+                    observacoes: 'Paciente assídua às consultas.'
+                },
+                { 
+                    id: Utilitarios.gerarId(), 
+                    nome: 'João Pereira', 
+                    telefone: '(85) 91234-5678', 
+                    nascimento: '1985-09-03', 
+                    cpf: '222.333.444-55', 
+                    historico: 'Tratamento de canal iniciado em 2023.',
+                    alergias: 'Alergia a penicilina.',
+                    evolucoes: 'Tratamento em andamento.',
+                    observacoes: 'Necessária próxima consulta para finalização.'
+                }
+            ]);
+        }
+    },
+
+    renderizarFormularioPacientes(containerId = "formulario-pacientes-container") {
+        const container = Utilitarios.seletor(`#${containerId}`);
+        if (!container) return;
+        
+        container.innerHTML = `
+            <form class="formulario" id="formCadastroPaciente">
+                <div class="linha-formulario">
+                    <div class="grupo-formulario">
+                        <label for="pacienteNome">Nome Completo *</label>
+                        <input type="text" id="pacienteNome" required placeholder="Digite o nome completo">
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="pacienteTelefone">Telefone</label>
+                        <input type="text" id="pacienteTelefone" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+
+                <div class="linha-formulario">
+                    <div class="grupo-formulario">
+                        <label for="pacienteNascimento">Data de Nascimento</label>
+                        <input type="date" id="pacienteNascimento">
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="pacienteCPF">CPF</label>
+                        <input type="text" id="pacienteCPF" placeholder="000.000.000-00">
+                    </div>
+                </div>
+
+                <div class="linha-formulario">
+                    <div class="grupo-formulario">
+                        <label for="pacienteHistorico">Histórico de Tratamento</label>
+                        <textarea id="pacienteHistorico" rows="3" placeholder="Descreva o histórico de tratamento"></textarea>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="pacienteAlergias">Alergias</label>
+                        <textarea id="pacienteAlergias" rows="3" placeholder="Liste as alergias conhecidas"></textarea>
+                    </div>
+                </div>
+
+                <div class="linha-formulario">
+                    <div class="grupo-formulario">
+                        <label for="pacienteEvolucoes">Evoluções</label>
+                        <textarea id="pacienteEvolucoes" rows="3" placeholder="Descreva as evoluções do tratamento"></textarea>
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="pacienteObservacoes">Observações</label>
+                        <textarea id="pacienteObservacoes" rows="3" placeholder="Observações adicionais"></textarea>
+                    </div>
+                </div>
+
+                <div class="linha-formulario">
+                    <div class="grupo-formulario">
+                        <label for="pacienteFoto">Foto 3x4</label>
+                        <input type="file" id="pacienteFoto" accept="image/*">
+                    </div>
+                    <div class="grupo-formulario">
+                        <label for="pacienteRadiografias">Radiografias</label>
+                        <input type="file" id="pacienteRadiografias" accept="image/*" multiple>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="button" class="botao-salvar" id="btnSalvarPaciente">Salvar Paciente</button>
+                </div>
+            </form>
+        `;
+        
+        // Configurar evento de salvamento
+        Utilitarios.seletor("#btnSalvarPaciente").addEventListener("click", () => {
+            this.salvarPaciente();
+        });
+    },
+
+    salvarPaciente() {
+        const nome = Utilitarios.seletor("#pacienteNome").value.trim();
+        if (!nome) { 
+            alert('Preencha o nome do paciente.'); 
+            return; 
+        }
+        
+        const paciente = {
+            id: Utilitarios.gerarId(),
+            nome,
+            telefone: Utilitarios.seletor("#pacienteTelefone").value.trim(),
+            nascimento: Utilitarios.seletor("#pacienteNascimento").value || '',
+            cpf: Utilitarios.seletor("#pacienteCPF").value.trim(),
+            historico: Utilitarios.seletor("#pacienteHistorico").value.trim(),
+            alergias: Utilitarios.seletor("#pacienteAlergias").value.trim(),
+            evolucoes: Utilitarios.seletor("#pacienteEvolucoes").value.trim(),
+            observacoes: Utilitarios.seletor("#pacienteObservacoes").value.trim()
+        };
+        
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        pacientes.push(paciente);
+        Utilitarios.armazenamento.definir('sml_pacientes', pacientes);
+        
+        // Limpar formulário
+        Utilitarios.seletor("#formCadastroPaciente").reset();
+        this.renderizarPacientes();
+        alert('Paciente salvo com sucesso!');
+    },
+
+    renderizarPacientes(tabelaId = "tabelaPacientes") {
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        const tbody = Utilitarios.seletor(`#${tabelaId} tbody`);
+        
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        
+        pacientes.forEach(paciente => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${paciente.nome}</td>
+                <td>${paciente.telefone || '-'}</td>
+                <td>${paciente.nascimento ? Utilitarios.formatarData(paciente.nascimento) : '-'}</td>
+                <td>${paciente.cpf || '-'}</td>
+                <td>
+                    <button data-id="${paciente.id}" class="botao-secundario editarPaciente">Editar</button>
+                    <button data-id="${paciente.id}" class="botao-secundario removerPaciente">Remover</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Configurar eventos dos botões
+        Utilitarios.seletores('.editarPaciente').forEach(botao => {
+            botao.addEventListener('click', (e) => {
+                this.editarPaciente(e.target.dataset.id);
+            });
+        });
+        
+        Utilitarios.seletores('.removerPaciente').forEach(botao => {
+            botao.addEventListener('click', (e) => {
+                this.removerPaciente(e.target.dataset.id);
+            });
+        });
+    },
+
+    editarPaciente(id) {
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        const paciente = pacientes.find(p => p.id === id);
+        
+        if (!paciente) {
+            alert('Paciente não encontrado.');
+            return;
+        }
+        
+        // Preencher formulário com dados do paciente
+        Utilitarios.seletor("#pacienteNome").value = paciente.nome;
+        Utilitarios.seletor("#pacienteTelefone").value = paciente.telefone;
+        Utilitarios.seletor("#pacienteNascimento").value = paciente.nascimento;
+        Utilitarios.seletor("#pacienteCPF").value = paciente.cpf;
+        Utilitarios.seletor("#pacienteHistorico").value = paciente.historico;
+        Utilitarios.seletor("#pacienteAlergias").value = paciente.alergias;
+        Utilitarios.seletor("#pacienteEvolucoes").value = paciente.evolucoes;
+        Utilitarios.seletor("#pacienteObservacoes").value = paciente.observacoes;
+        
+        // Remover paciente antigo para substituição ao salvar
+        const pacientesAtualizados = pacientes.filter(p => p.id !== id);
+        Utilitarios.armazenamento.definir('sml_pacientes', pacientesAtualizados);
+        
+        this.renderizarPacientes();
+    },
+
+    removerPaciente(id) {
+        if (!confirm('Tem certeza que deseja remover este paciente?')) return;
+        
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        const pacientesAtualizados = pacientes.filter(p => p.id !== id);
+        Utilitarios.armazenamento.definir('sml_pacientes', pacientesAtualizados);
+        
+        this.renderizarPacientes();
+    },
+
+    abrirModalPaciente(id) {
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        const paciente = pacientes.find(p => p.id === id);
+        
+        if (!paciente) return;
+        
+        Utilitarios.seletor("#nomePacienteModal").textContent = paciente.nome;
+        Utilitarios.seletor("#telefonePacienteModal").textContent = paciente.telefone || '-';
+        Utilitarios.seletor("#nascimentoPacienteModal").textContent = paciente.nascimento ? Utilitarios.formatarData(paciente.nascimento) : '-';
+        Utilitarios.seletor("#cpfPacienteModal").textContent = paciente.cpf || '-';
+        Utilitarios.seletor("#historicoTratamento").value = paciente.historico || '';
+        Utilitarios.seletor("#alergiasPaciente").value = paciente.alergias || '';
+        Utilitarios.seletor("#evolucoesPaciente").value = paciente.evolucoes || '';
+        Utilitarios.seletor("#observacoesPaciente").value = paciente.observacoes || '';
+        
+        Utilitarios.seletor("#modalPaciente").style.display = "block";
+    }
+};
+
+// =============================================
+// MÓDULO DE AGENDAMENTOS (COMPARTILHADO)
+// =============================================
+const ModuloAgendamentos = {
+    dataSelecionada: null,
+    dataAtual: new Date(),
+
+    inicializar(containerId = "agendamentos-container") {
+        this.inicializarDadosPadrao();
+        this.renderizarComponenteAgendamentos(containerId);
+        this.renderizarCalendario();
+        this.renderizarSeletores();
+    },
+
+    inicializarDadosPadrao() {
+        if (!Utilitarios.armazenamento.obter('sml_agendamentos', null)) {
+            Utilitarios.armazenamento.definir('sml_agendamentos', []);
+        }
+        
+        if (!Utilitarios.armazenamento.obter('sml_dentistas', null)) {
+            Utilitarios.armazenamento.definir('sml_dentistas', [
+                { 
+                    id: Utilitarios.gerarId(), 
+                    nome: 'Dr. Fábio Mendes', 
+                    especialidades: ['Limpeza Dentária', 'Clareamento Dental', 'Restauração'] 
+                },
+                { 
+                    id: Utilitarios.gerarId(), 
+                    nome: 'Dra. Joana Silva', 
+                    especialidades: ['Extração', 'Cirurgia Oral', 'Implante Dentário'] 
+                },
+                { 
+                    id: Utilitarios.gerarId(), 
+                    nome: 'Dr. Carlos Almeida', 
+                    especialidades: ['Obturação', 'Tratamento de Canal', 'Prótese Dentária'] 
+                }
+            ]);
+        }
+    },
+
+    renderizarComponenteAgendamentos(containerId) {
+        const container = Utilitarios.seletor(`#${containerId}`);
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div class="calendario">
+                <div class="cabecalho-calendario">
+                    <div>
+                        <button id="mesAnterior" class="botao-secundario">◀ Mês Anterior</button>
+                        <button id="mesSeguinte" class="botao-secundario">Próximo Mês ▶</button>
+                        <span id="mesAno" style="margin-left:15px;font-weight:700;font-size:18px;"></span>
+                    </div>
+
+                    <div style="display:flex;gap:15px;flex-wrap:wrap;">
+                        <div>
+                            <label>Paciente:</label>
+                            <select id="selectPaciente">
+                                <option value="">-- selecione paciente --</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Dentista:</label>
+                            <select id="selectDentista"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grade-calendario" id="gradeCalendario"></div>
+
+                <div style="margin-top:20px;">
+                    <h3>Horários Disponíveis em <span id="textoDataSelecionada" style="color:#1E6BD6;">nenhuma data</span></h3>
+                    <div class="lista-horarios" id="listaHorarios"></div>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <div class="linha-formulario">
+                        <div class="grupo-formulario">
+                            <label>Especialidade:</label>
+                            <select id="selectEspecialidade"></select>
+                        </div>
+                        
+                        <div class="grupo-formulario">
+                            <label>Observações do Agendamento:</label>
+                            <input type="text" id="observacaoAgendamento" placeholder="opcional">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <button class="botao-salvar" id="btnAgendar">Confirmar Agendamento</button>
+                </div>
+            </div>
+        `;
+        
+        // Configurar eventos
+        Utilitarios.seletor("#mesAnterior").addEventListener("click", () => {
+            this.dataAtual = new Date(this.dataAtual.getFullYear(), this.dataAtual.getMonth() - 1, 1);
+            this.renderizarCalendario();
+        });
+        
+        Utilitarios.seletor("#mesSeguinte").addEventListener("click", () => {
+            this.dataAtual = new Date(this.dataAtual.getFullYear(), this.dataAtual.getMonth() + 1, 1);
+            this.renderizarCalendario();
+        });
+        
+        Utilitarios.seletor("#btnAgendar").addEventListener("click", () => {
+            this.confirmarAgendamento();
+        });
+        
+        Utilitarios.seletor("#selectDentista").addEventListener("change", () => {
+            this.atualizarEspecialidades();
+            this.renderizarHorariosDisponiveis();
+        });
+    },
+
+    renderizarCalendario() {
+        const gradeCalendario = Utilitarios.seletor("#gradeCalendario");
+        if (!gradeCalendario) return;
+        
+        gradeCalendario.innerHTML = '';
+        
+        const ano = this.dataAtual.getFullYear();
+        const mes = this.dataAtual.getMonth();
+        const primeiroDia = new Date(ano, mes, 1);
+        const ultimoDia = new Date(ano, mes + 1, 0);
+        const diaInicio = primeiroDia.getDay();
+        const diasNoMes = ultimoDia.getDate();
+
+        Utilitarios.seletor("#mesAno").textContent = primeiroDia.toLocaleString('pt-BR', { 
+            month: 'long', 
+            year: 'numeric' 
+        }).replace(/^\w/, c => c.toUpperCase());
+
+        // Cabeçalho dos dias da semana
+        const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        diasSemana.forEach(dia => {
+            const celula = document.createElement('div');
+            celula.className = 'celula-calendario';
+            celula.style.minHeight = '50px';
+            celula.style.padding = '10px';
+            celula.style.textAlign = 'center';
+            celula.style.fontWeight = 'bold';
+            celula.style.color = '#0b3a66';
+            celula.innerHTML = `<div class="dia-calendario">${dia}</div>`;
+            gradeCalendario.appendChild(celula);
+        });
+
+        // Preencher células vazias até o primeiro dia
+        for (let i = 0; i < diaInicio; i++) {
+            const celula = document.createElement('div');
+            celula.className = 'celula-calendario desativada';
+            gradeCalendario.appendChild(celula);
+        }
+
+        // Dias do mês
+        for (let dia = 1; dia <= diasNoMes; dia++) {
+            const celula = document.createElement('div');
+            celula.className = 'celula-calendario';
+            const data = new Date(ano, mes, dia);
+            const dataISO = data.toISOString().slice(0, 10);
+            const diaSemana = data.getDay();
+            
+            // Marcar fim de semana
+            if (diaSemana === 0 || diaSemana === 6) {
+                celula.style.background = '#f0f5ff';
+            }
+
+            celula.innerHTML = `
+                <div class="dia-calendario">${dia}</div>
+                <div class="texto-secundario" style="font-size:12px;">${dataISO}</div>
+            `;
+            
+            // Botão selecionar data
+            const botao = document.createElement('button');
+            botao.className = 'botao-data';
+            botao.textContent = 'Selecionar';
+            botao.addEventListener('click', () => {
+                this.dataSelecionada = dataISO;
+                Utilitarios.seletores('.botao-data').forEach(b => b.classList.remove('selecionado'));
+                botao.classList.add('selecionado');
+                Utilitarios.seletor("#textoDataSelecionada").textContent = dataISO;
+                this.renderizarHorariosDisponiveis();
+            });
+            
+            celula.appendChild(botao);
+            gradeCalendario.appendChild(celula);
+        }
+
+        // Preenchimento final para manter grid limpo
+        const totalCelulas = gradeCalendario.children.length;
+        const resto = totalCelulas % 7;
+        if (resto !== 0) {
+            const adicionar = 7 - resto;
+            for (let i = 0; i < adicionar; i++) {
+                const celula = document.createElement('div');
+                celula.className = 'celula-calendario desativada';
+                gradeCalendario.appendChild(celula);
+            }
+        }
+    },
+
+    renderizarSeletores() {
+        // Pacientes
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        const selectPaciente = Utilitarios.seletor("#selectPaciente");
+        
+        if (selectPaciente) {
+            selectPaciente.innerHTML = '<option value="">-- selecione paciente --</option>';
+            pacientes.forEach(paciente => {
+                const opcao = document.createElement('option');
+                opcao.value = paciente.id;
+                opcao.textContent = paciente.nome;
+                selectPaciente.appendChild(opcao);
+            });
+        }
+
+        // Dentistas
+        const dentistas = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        const selectDentista = Utilitarios.seletor("#selectDentista");
+        
+        if (selectDentista) {
+            selectDentista.innerHTML = '<option value="">-- selecione dentista --</option>';
+            dentistas.forEach(dentista => {
+                const opcao = document.createElement('option');
+                opcao.value = dentista.id;
+                opcao.textContent = dentista.nome;
+                selectDentista.appendChild(opcao);
+            });
+        }
+    },
+
+    atualizarEspecialidades() {
+        const dentistas = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        const selectDentista = Utilitarios.seletor("#selectDentista");
+        const selectEspecialidade = Utilitarios.seletor("#selectEspecialidade");
+        
+        if (!selectDentista || !selectEspecialidade) return;
+        
+        const dentistaSelecionado = dentistas.find(d => d.id === selectDentista.value);
+        selectEspecialidade.innerHTML = '';
+        
+        if (dentistaSelecionado) {
+            selectEspecialidade.innerHTML = '<option value="">-- selecione especialidade --</option>';
+            dentistaSelecionado.especialidades.forEach(especialidade => {
+                const opcao = document.createElement('option');
+                opcao.value = especialidade;
+                opcao.textContent = especialidade;
+                selectEspecialidade.appendChild(opcao);
+            });
+        } else {
+            selectEspecialidade.innerHTML = '<option value="">-- selecione dentista --</option>';
+        }
+        
+        this.renderizarHorariosDisponiveis();
+    },
+
+    renderizarHorariosDisponiveis() {
+        const listaHorarios = Utilitarios.seletor("#listaHorarios");
+        if (!listaHorarios) return;
+        
+        listaHorarios.innerHTML = '';
+        
+        if (!this.dataSelecionada) {
+            listaHorarios.innerHTML = '<div class="texto-secundario">Selecione uma data no calendário para ver os horários disponíveis.</div>';
+            return;
+        }
+        
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const selectDentista = Utilitarios.seletor("#selectDentista");
+        const dentistaId = selectDentista ? selectDentista.value : null;
+        
+        // Horários de funcionamento
+        const horariosFuncionamento = [9, 10, 11, 14, 15, 16, 17];
+        
+        horariosFuncionamento.forEach(hora => {
+            const horaFormatada = String(hora).padStart(2, '0') + ':00';
+            
+            // Verificar se horário já está agendado
+            const existeAgendamento = agendamentos.find(a => 
+                a.data === this.dataSelecionada && 
+                a.hora === horaFormatada && 
+                a.dentistaId === dentistaId
+            );
+            
+            const slot = document.createElement('div');
+            slot.className = 'slot-horario' + (existeAgendamento ? ' desativado' : '');
+            slot.textContent = horaFormatada;
+            
+            if (!existeAgendamento) {
+                slot.addEventListener('click', () => {
+                    Utilitarios.seletores('.slot-horario').forEach(s => s.classList.remove('selecionado'));
+                    slot.classList.add('selecionado');
+                    slot.dataset.horarioSelecionado = horaFormatada;
+                });
+            }
+            
+            listaHorarios.appendChild(slot);
+        });
+    },
+
+    confirmarAgendamento() {
+        const selectPaciente = Utilitarios.seletor("#selectPaciente");
+        const selectDentista = Utilitarios.seletor("#selectDentista");
+        const selectEspecialidade = Utilitarios.seletor("#selectEspecialidade");
+        
+        if (!this.dataSelecionada) {
+            alert('Selecione uma data no calendário.');
+            return;
+        }
+        
+        if (!selectPaciente || !selectPaciente.value) {
+            alert('Selecione um paciente.');
+            return;
+        }
+        
+        if (!selectDentista || !selectDentista.value) {
+            alert('Selecione um dentista.');
+            return;
+        }
+        
+        if (!selectEspecialidade || !selectEspecialidade.value) {
+            alert('Selecione uma especialidade.');
+            return;
+        }
+        
+        const slotSelecionado = Utilitarios.seletores('.slot-horario').find(s => 
+            s.classList.contains('selecionado') && 
+            !s.classList.contains('desativado')
+        );
+        
+        if (!slotSelecionado || !slotSelecionado.textContent) {
+            alert('Selecione um horário disponível.');
+            return;
+        }
+        
+        const hora = slotSelecionado.textContent.trim();
+        
+        // Verificar conflito novamente
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const conflito = agendamentos.find(a => 
+            a.data === this.dataSelecionada && 
+            a.hora === hora && 
+            a.dentistaId === selectDentista.value
+        );
+        
+        if (conflito) {
+            alert('Horário já reservado para esse dentista.');
+            return;
+        }
+        
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        const dentistas = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        
+        const paciente = pacientes.find(p => p.id === selectPaciente.value);
+        const dentista = dentistas.find(d => d.id === selectDentista.value);
+        
+        const novoAgendamento = {
+            id: Utilitarios.gerarId(),
+            pacienteId: selectPaciente.value,
+            pacienteNome: paciente ? paciente.nome : '---',
+            dentistaId: selectDentista.value,
+            dentistaNome: dentista ? dentista.nome : '---',
+            especialidade: selectEspecialidade ? selectEspecialidade.value : '',
+            data: this.dataSelecionada,
+            hora: hora,
+            observacoes: Utilitarios.seletor("#observacaoAgendamento").value.trim()
+        };
+        
+        agendamentos.push(novoAgendamento);
+        Utilitarios.armazenamento.definir('sml_agendamentos', agendamentos);
+        
+        alert('Agendamento confirmado para ' + novoAgendamento.data + ' às ' + novoAgendamento.hora);
+        this.renderizarCalendario();
+        this.renderizarHorariosDisponiveis();
+        
+        // Atualizar dashboards
+        if (typeof ModuloAdmin !== 'undefined') ModuloAdmin.renderizarDashboard();
+        if (typeof ModuloSecretaria !== 'undefined') ModuloSecretaria.renderizarDashboard();
+    }
+};
+
+// =============================================
+// MÓDULO ADMINISTRATIVO
+// =============================================
+const ModuloAdmin = {
+    inicializar() {
+        this.configurarNavegacao();
+        this.inicializarModulos();
+        this.renderizarDashboard();
+    },
+
+    configurarNavegacao() {
+        const botoesSidebar = Utilitarios.seletores('#telaAdmin .btn-sidebar');
+        
+        botoesSidebar.forEach(botao => {
+            botao.addEventListener('click', () => {
+                botoesSidebar.forEach(b => b.classList.remove('active'));
+                botao.classList.add('active');
+                
+                const aba = botao.dataset.aba;
+                this.mostrarAba(aba);
+            });
+        });
+    },
+
+    mostrarAba(aba) {
+        // Esconder todas as páginas
+        Utilitarios.seletores('#telaAdmin .pagina').forEach(pagina => {
+            pagina.classList.remove('pagina-ativa');
+        });
+        
+        // Mostrar a aba selecionada
+        const elementoAba = Utilitarios.seletor(`#aba-${aba}`);
+        if (elementoAba) {
+            elementoAba.classList.add('pagina-ativa');
+        }
+        
+        // Inicializar dados específicos da aba
+        if (aba === 'pacientes') {
+            ModuloPacientes.inicializar();
+        } else if (aba === 'agendamentos') {
+            ModuloAgendamentos.inicializar();
+        } else if (aba === 'dentistas') {
+            this.inicializarDentistas();
+        } else if (aba === 'financeiro') {
+            this.renderizarFinanceiro();
+        } else if (aba === 'dashboard') {
+            this.renderizarDashboard();
+        }
+    },
+
+    inicializarModulos() {
+        // Inicializar módulo de dentistas
+        this.inicializarDentistas();
+        
+        // Configurar eventos de relatórios
+        Utilitarios.seletor("#btnRelPacientes").addEventListener("click", () => {
+            this.exportarRelatorioPacientes();
+        });
+        
+        Utilitarios.seletor("#btnRelDentistas").addEventListener("click", () => {
+            this.exportarRelatorioDentistas();
+        });
+        
+        Utilitarios.seletor("#btnRelFinanceiro").addEventListener("click", () => {
+            this.exportarRelatorioFinanceiro();
+        });
+    },
+
+    inicializarDentistas() {
+        // Configurar evento para adicionar especialidades
+        Utilitarios.seletor("#btnAdicionarEspecialidade").addEventListener("click", () => {
+            this.adicionarCampoEspecialidade();
+        });
+        
+        // Adicionar campo inicial de especialidade
+        this.adicionarCampoEspecialidade();
+        
+        Utilitarios.seletor("#btnSalvarDentista").addEventListener("click", () => {
+            this.salvarDentista();
+        });
+        
+        this.renderizarDentistas();
+    },
+    
+    adicionarCampoEspecialidade() {
+        const container = Utilitarios.seletor("#containerEspecialidades");
+        const div = document.createElement('div');
+        div.className = 'linha-especialidade';
+        
+        div.innerHTML = `
+            <input type="text" class="input-especialidade" placeholder="ex: Limpeza Dentária">
+            <button type="button" class="botao-remover-especialidade">Remover</button>
+        `;
+        
+        container.appendChild(div);
+        
+        // Configurar evento do botão remover
+        div.querySelector('.botao-remover-especialidade').addEventListener('click', () => {
+            // Só remove se houver mais de um campo
+            if (Utilitarios.seletores('.linha-especialidade').length > 1) {
+                container.removeChild(div);
+            } else {
+                alert('É necessário ter pelo menos uma especialidade.');
+            }
+        });
+    },
+
+    salvarDentista() {
+        const nome = Utilitarios.seletor("#dentistaNome").value.trim();
+        if (!nome) {
+            alert('Preencha o nome do dentista.');
+            return;
+        }
+        
+        // Coletar todas as especialidades
+        const inputsEspecialidades = Utilitarios.seletores('.input-especialidade');
+        const especialidades = Array.from(inputsEspecialidades)
+            .map(input => input.value.trim())
+            .filter(esp => esp !== ''); // Remover strings vazias
+        
+        // Verificar se há pelo menos uma especialidade
+        if (especialidades.length === 0) {
+            alert('Adicione pelo menos uma especialidade.');
+            return;
+        }
+        
+        const dentistas = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        dentistas.push({ 
+            id: Utilitarios.gerarId(), 
+            nome, 
+            especialidades: especialidades 
+        });
+        
+        Utilitarios.armazenamento.definir('sml_dentistas', dentistas);
+        
+        // Limpar formulário
+        Utilitarios.seletor("#dentistaNome").value = '';
+        const container = Utilitarios.seletor("#containerEspecialidades");
+        container.innerHTML = '';
+        this.adicionarCampoEspecialidade(); // Adicionar campo vazio novamente
+        
+        this.renderizarDentistas();
+        alert('Dentista salvo com ' + especialidades.length + ' especialidade(s).');
+    },
+
+    renderizarDentistas() {
+        const dentistas = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        const tbody = Utilitarios.seletor("#tabelaDentistas tbody");
+        
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        
+        dentistas.forEach(dentista => {
+            const tr = document.createElement('tr');
+            
+            // Mostrar especialidades como tags
+            const especialidadesHTML = dentista.especialidades
+                .map(esp => `<span class="tag-especialidade">${esp}</span>`)
+                .join('');
+            
+            tr.innerHTML = `
+                <td>${dentista.nome}</td>
+                <td>${especialidadesHTML}</td>
+                <td>
+                    <button data-id="${dentista.id}" class="botao-secundario removerDentista">Remover</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        // Configurar eventos dos botões de remoção
+        Utilitarios.seletores('.removerDentista').forEach(botao => {
+            botao.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                this.removerDentista(id);
+            });
+        });
+    },
+
+    removerDentista(id) {
+        if (!confirm('Tem certeza que deseja remover este dentista?')) return;
+        
+        const dentistas = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        const dentistasAtualizados = dentistas.filter(d => d.id !== id);
+        Utilitarios.armazenamento.definir('sml_dentistas', dentistasAtualizados);
+        
+        this.renderizarDentistas();
+    },
+
+    renderizarDashboard() {
+        // Próximos agendamentos
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const proximosAgendamentos = agendamentos
+            .slice()
+            .sort((a, b) => (a.data + a.hora) > (b.data + b.hora) ? 1 : -1)
+            .slice(0, 8);
+        
+        const tbody = Utilitarios.seletor("#tabelaProximosAgendamentos tbody");
+        
+        if (tbody) {
+            tbody.innerHTML = '';
+            
+            if (proximosAgendamentos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;" class="texto-secundario">Nenhum agendamento encontrado.</td></tr>';
+            } else {
+                proximosAgendamentos.forEach(agendamento => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${Utilitarios.formatarData(agendamento.data)}</td>
+                        <td>${agendamento.hora}</td>
+                        <td>${agendamento.pacienteNome}</td>
+                        <td>${agendamento.dentistaNome}</td>
+                        <td>${agendamento.especialidade}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+        
+        // Financeiro
+        this.renderizarFinanceiro();
+    },
+
+    renderizarFinanceiro() {
+        const pagamentos = Utilitarios.armazenamento.obter('sml_pagamentos', []);
+        const entradas = pagamentos.reduce((soma, pagamento) => soma + Number(pagamento.valor), 0);
+        const saidas = 0; // Para simplificar, consideramos apenas entradas
+        const saldo = entradas - saidas;
+        
+        // Atualizar valores no dashboard
+        Utilitarios.seletor("#totalEntradas").textContent = Utilitarios.formatarMoeda(entradas);
+        Utilitarios.seletor("#totalSaidas").textContent = Utilitarios.formatarMoeda(saidas);
+        Utilitarios.seletor("#saldoAtual").textContent = Utilitarios.formatarMoeda(saldo);
+        
+        // Atualizar valores na aba de financeiro
+        Utilitarios.seletor("#valorEntradas").textContent = Utilitarios.formatarMoeda(entradas);
+        Utilitarios.seletor("#valorSaidas").textContent = Utilitarios.formatarMoeda(saidas);
+        Utilitarios.seletor("#valorSaldo").textContent = Utilitarios.formatarMoeda(saldo);
+        
+        // Renderizar tabela de pagamentos
+        const tbody = Utilitarios.seletor("#tabelaPagamentos tbody");
+        
+        if (tbody) {
+            tbody.innerHTML = '';
+            
+            if (pagamentos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;" class="texto-secundario">Nenhum pagamento registrado.</td></tr>';
+            } else {
+                pagamentos.forEach(pagamento => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pagamento.paciente}</td>
+                        <td>${Utilitarios.formatarMoeda(pagamento.valor)}</td>
+                        <td>${pagamento.tipo}</td>
+                        <td>${Utilitarios.formatarData(pagamento.data)}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+    },
+
+    exportarRelatorioPacientes() {
+        const dados = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        this.exportarCSV(dados, ['id', 'nome', 'telefone', 'nascimento', 'cpf', 'historico', 'alergias', 'evolucoes', 'observacoes'], 'relatorio-pacientes.csv');
+    },
+
+    exportarRelatorioDentistas() {
+        const dados = Utilitarios.armazenamento.obter('sml_dentistas', []);
+        // Converter especialidades para string
+        const dadosFormatados = dados.map(dentista => ({
+            id: dentista.id,
+            nome: dentista.nome,
+            especialidades: dentista.especialidades.join('; ')
+        }));
+        this.exportarCSV(dadosFormatados, ['id', 'nome', 'especialidades'], 'relatorio-dentistas.csv');
+    },
+
+    exportarRelatorioFinanceiro() {
+        const dados = Utilitarios.armazenamento.obter('sml_pagamentos', []);
+        this.exportarCSV(dados, ['id', 'paciente', 'valor', 'tipo', 'data'], 'relatorio-financeiro.csv');
+    },
+
+    exportarCSV(dados, campos, nomeArquivo) {
+        if (!dados || !dados.length) {
+            alert('Sem dados para exportar.');
+            return;
+        }
+        
+        const cabecalho = campos.join(',');
+        const linhas = dados.map(item => {
+            return campos.map(campo => {
+                let valor = item[campo] ?? '';
+                if (typeof valor === 'string') {
+                    valor = valor.replace(/"/g, '""');
+                }
+                return `"${valor}"`;
+            }).join(',');
+        });
+        
+        const csv = [cabecalho].concat(linhas).join('\n');
+        const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = nomeArquivo;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        
+        alert(`Relatório ${nomeArquivo} exportado com sucesso!`);
+    }
+};
+
+// =============================================
+// MÓDULO DA SECRETÁRIA
+// =============================================
+const ModuloSecretaria = {
+    inicializar() {
+        this.configurarNavegacao();
+        this.inicializarModulos();
+        this.renderizarDashboard();
+    },
+
+    configurarNavegacao() {
+        const botoesSidebar = Utilitarios.seletores('#telaSecretaria .btn-sidebar');
+        
+        botoesSidebar.forEach(botao => {
+            botao.addEventListener('click', () => {
+                botoesSidebar.forEach(b => b.classList.remove('active'));
+                botao.classList.add('active');
+                
+                const aba = botao.dataset.aba;
+                this.mostrarAba(aba);
+            });
+        });
+    },
+
+    mostrarAba(aba) {
+        // Esconder todas as páginas
+        Utilitarios.seletores('#telaSecretaria .pagina').forEach(pagina => {
+            pagina.classList.remove('pagina-ativa');
+        });
+        
+        // Mostrar a aba selecionada
+        const elementoAba = Utilitarios.seletor(`#${aba}`);
+        if (elementoAba) {
+            elementoAba.classList.add('pagina-ativa');
+        }
+        
+        // Inicializar dados específicos da aba
+        if (aba === 'sec-pacientes') {
+            ModuloPacientes.inicializar("formulario-pacientes-secretaria-container", "tabelaSecPacientes");
+        } else if (aba === 'sec-agendamentos') {
+            ModuloAgendamentos.inicializar("agendamentos-secretaria-container");
+            this.renderizarAgendamentosSecretaria();
+        } else if (aba === 'sec-dashboard') {
+            this.renderizarDashboard();
+        }
+    },
+
+    inicializarModulos() {
+        // Configurar eventos específicos da secretária
+        const btnSalvar = Utilitarios.seletor("#btnSecSalvarPaciente");
+        if (btnSalvar) {
+            btnSalvar.addEventListener("click", () => {
+                ModuloPacientes.salvarPaciente();
+            });
+        }
+    },
+
+    renderizarDashboard() {
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const proximosAgendamentos = agendamentos
+            .slice()
+            .sort((a, b) => (a.data + a.hora) > (b.data + b.hora) ? 1 : -1)
+            .slice(0, 8);
+        
+        const tbody = Utilitarios.seletor("#tabelaProximosAgendamentosSec tbody");
+        
+        if (tbody) {
+            tbody.innerHTML = '';
+            
+            if (proximosAgendamentos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;" class="texto-secundario">Nenhum agendamento encontrado.</td></tr>';
+            } else {
+                proximosAgendamentos.forEach(agendamento => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${Utilitarios.formatarData(agendamento.data)}</td>
+                        <td>${agendamento.hora}</td>
+                        <td>${agendamento.pacienteNome}</td>
+                        <td>${agendamento.dentistaNome}</td>
+                        <td>${agendamento.especialidade}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+    },
+
+    renderizarAgendamentosSecretaria() {
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const tbody = Utilitarios.seletor("#tabelaSecAgendamentos tbody");
+        
+        if (tbody) {
+            tbody.innerHTML = '';
+            
+            if (agendamentos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;" class="texto-secundario">Nenhum agendamento registrado.</td></tr>';
+            } else {
+                agendamentos.forEach(agendamento => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${Utilitarios.formatarData(agendamento.data)}</td>
+                        <td>${agendamento.hora}</td>
+                        <td>${agendamento.pacienteNome}</td>
+                        <td>${agendamento.dentistaNome}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+    }
+};
+
+// =============================================
+// MÓDULO DO DENTISTA
+// =============================================
+const ModuloDentista = {
+    nomeDentista: '',
+    
+    inicializar() {
+        this.configurarNavegacao();
+        this.carregarAgendaDentista();
+    },
+
+    configurarNavegacao() {
+        const botoesSidebar = Utilitarios.seletores('#telaDentista .btn-sidebar');
+        
+        botoesSidebar.forEach(botao => {
+            botao.addEventListener('click', () => {
+                botoesSidebar.forEach(b => b.classList.remove('active'));
+                botao.classList.add('active');
+                
+                const aba = botao.dataset.aba;
+                this.mostrarAba(aba);
+            });
+        });
+    },
+
+    mostrarAba(aba) {
+        // Esconder todas as páginas
+        Utilitarios.seletores('#telaDentista .pagina').forEach(pagina => {
+            pagina.classList.remove('pagina-ativa');
+        });
+        
+        // Mostrar a aba selecionada
+        const elementoAba = Utilitarios.seletor(`#${aba}`);
+        if (elementoAba) {
+            elementoAba.classList.add('pagina-ativa');
+        }
+        
+        // Inicializar dados específicos da aba
+        if (aba === 'dent-pacientes') {
+            this.carregarPacientesDentista();
+        } else if (aba === 'dent-agenda') {
+            this.carregarAgendaDentista();
+        }
+    },
+
+    carregarAgendaDentista() {
+        // Obter nome do dentista logado (simulação)
+        // Em um sistema real, isso viria da sessão de login
+        this.nomeDentista = "Dr. Fábio Mendes"; // Exemplo
+        
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        
+        // Filtrar apenas agendamentos do dentista logado
+        const meusAgendamentos = agendamentos.filter(a => a.dentistaNome === this.nomeDentista);
+        
+        // Grade da semana
+        const grade = Utilitarios.seletor("#gradeAgendaDentista");
+        if (!grade) return;
+        
+        grade.innerHTML = '';
+        
+        const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+        
+        diasSemana.forEach(dia => {
+            const div = document.createElement("div");
+            div.className = "dia-semanal";
+            div.innerHTML = `<strong>${dia}</strong><br>`;
+            
+            // Listar atendimentos do dia
+            const agendamentosDoDia = meusAgendamentos.filter(agendamento => {
+                const data = new Date(agendamento.data);
+                const nomeDia = diasSemana[data.getDay()];
+                return nomeDia === dia;
+            });
+            
+            if (agendamentosDoDia.length === 0) {
+                div.innerHTML += `<div class="texto-secundario" style="padding:10px;text-align:center;">Nenhum agendamento</div>`;
+            } else {
+                agendamentosDoDia.forEach(agendamento => {
+                    div.innerHTML += `
+                        <div class="item-agenda" onclick="ModuloDentista.abrirPaciente('${agendamento.pacienteId}')">
+                            <strong>${agendamento.hora}</strong> - ${agendamento.pacienteNome}<br>
+                            <small>${agendamento.especialidade}</small>
+                        </div>
+                    `;
+                });
+            }
+            
+            grade.appendChild(div);
+        });
+    },
+
+    carregarPacientesDentista() {
+        const agendamentos = Utilitarios.armazenamento.obter('sml_agendamentos', []);
+        const pacientes = Utilitarios.armazenamento.obter('sml_pacientes', []);
+        
+        // Filtrar apenas agendamentos do dentista logado
+        const meusAgendamentos = agendamentos.filter(a => a.dentistaNome === this.nomeDentista);
+        
+        // Preparar tabela dos pacientes do dentista
+        const tabela = Utilitarios.seletor("#tabelaDentPacientes tbody");
+        if (!tabela) return;
+        
+        tabela.innerHTML = '';
+        
+        // Obter IDs únicos de pacientes
+        const idsUnicos = [...new Set(meusAgendamentos.map(a => a.pacienteId))];
+        
+        if (idsUnicos.length === 0) {
+            tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;" class="texto-secundario">Nenhum paciente atendido.</td></tr>';
+        } else {
+            idsUnicos.forEach(id => {
+                const paciente = pacientes.find(p => p.id === id);
+                
+                if (paciente) {
+                    const tr = document.createElement('tr');
+                    tr.style.cursor = 'pointer';
+                    tr.addEventListener('click', () => {
+                        this.abrirPaciente(paciente.id);
+                    });
+                    
+                    tr.innerHTML = `
+                        <td>${paciente.nome}</td>
+                        <td>${paciente.telefone}</td>
+                        <td>${paciente.nascimento ? Utilitarios.formatarData(paciente.nascimento) : '-'}</td>
+                        <td>${paciente.cpf || '-'}</td>
+                    `;
+                    tabela.appendChild(tr);
+                }
+            });
+        }
+    },
+
+    abrirPaciente(id) {
+        ModuloPacientes.abrirModalPaciente(id);
+    }
+};
+
+// =============================================
+// FUNÇÕES GLOBAIS
+// =============================================
+function fecharModalPaciente() {
+    Utilitarios.seletor("#modalPaciente").style.display = "none";
 }
 
-function abrirAbaAdmin(aba) {
-    document.querySelectorAll(".adminPage").forEach(div => {
-        div.style.display = "none";
+// Configurar evento de salvamento no modal
+document.addEventListener('DOMContentLoaded', function() {
+    Utilitarios.seletor("#salvarDadosPaciente").addEventListener("click", function() {
+        // Esta função seria implementada para salvar os dados do modal
+        alert("Dados do paciente salvos com sucesso!");
+        fecharModalPaciente();
     });
+});
 
-    document.getElementById(`aba-${aba}`).style.display = "block";
-}
-
+// =============================================
+// INICIALIZAÇÃO DO SISTEMA
+// =============================================
+document.addEventListener('DOMContentLoaded', function() {
+    ModuloLogin.inicializar();
+    
+    // Inicializar dados padrão do sistema
+    if (!Utilitarios.armazenamento.obter('sml_pagamentos', null)) {
+        Utilitarios.armazenamento.definir('sml_pagamentos', [
+            { 
+                id: Utilitarios.gerarId(), 
+                paciente: 'Maria Silva', 
+                valor: 150.00, 
+                tipo: 'À vista', 
+                data: new Date().toISOString().slice(0,10) 
+            },
+            { 
+                id: Utilitarios.gerarId(), 
+                paciente: 'João Pereira', 
+                valor: 300.00, 
+                tipo: 'Parcelado', 
+                data: new Date().toISOString().slice(0,10) 
+            }
+        ]);
+    }
+});
 </script>
-
 </body>
 </html>
