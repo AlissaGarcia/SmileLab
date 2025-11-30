@@ -1,5 +1,6 @@
 # SmileLab
 Sistema de Gerenciamento de Clínica Odontológica. 
-<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/3c7856bf-8756-4e0c-ab71-d4bb9e716038" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/7f0750d7-1e9f-4195-a1d1-1c82ed3136b3" />
+
 
 
